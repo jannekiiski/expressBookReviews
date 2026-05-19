@@ -101,21 +101,31 @@ public_users.get('/author/:author', async function (req, res) {
 
 
 // Get book by title
-public_users.get('/title/:title', function (req, res) {
-  const titleName = req.params.title;
-  const bookKeys = Object.keys(books);
+public_users.get('/title/:title', async function (req, res) {
+  try {
+    const titleName = req.params.title;
 
-  let result = {};
+    const result = await new Promise((resolve) => {
+      setTimeout(() => {
+        const bookKeys = Object.keys(books);
+        let output = {};
 
-  for (let i = 0; i < bookKeys.length; i++) {
-    let isbn = bookKeys[i];
+        for (let i = 0; i < bookKeys.length; i++) {
+          let isbn = bookKeys[i];
 
-    if (books[isbn].title === titleName) {
-      result[isbn] = books[isbn];
-    }
+          if (books[isbn].title === titleName) {
+            output[isbn] = books[isbn];
+          }
+        }
+
+        resolve(output);
+      }, 1000);
+    });
+
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({ message: "Error fetching books by title" });
   }
-
-  return res.status(200).json(result);
 });
 
 
