@@ -72,21 +72,31 @@ public_users.get('/isbn/:isbn', async function (req, res) {
 
 
 // Get book by author
-public_users.get('/author/:author', function (req, res) {
-  const authorName = req.params.author;
-  const bookKeys = Object.keys(books);
+public_users.get('/author/:author', async function (req, res) {
+  try {
+    const authorName = req.params.author;
 
-  let result = {};
+    const result = await new Promise((resolve) => {
+      setTimeout(() => {
+        const bookKeys = Object.keys(books);
+        let output = {};
 
-  for (let i = 0; i < bookKeys.length; i++) {
-    let isbn = bookKeys[i];
+        for (let i = 0; i < bookKeys.length; i++) {
+          let isbn = bookKeys[i];
 
-    if (books[isbn].author === authorName) {
-      result[isbn] = books[isbn];
-    }
+          if (books[isbn].author === authorName) {
+            output[isbn] = books[isbn];
+          }
+        }
+
+        resolve(output);
+      }, 1000);
+    });
+
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({ message: "Error fetching books by author" });
   }
-
-  return res.status(200).json(result);
 });
 
 
