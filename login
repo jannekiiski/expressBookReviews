@@ -1,0 +1,4 @@
+theia@theia-jannekiiski9:/home/project$ curl -X POST http://localhost:5000/customer/login \
+-H "Content-Type: application/json" \
+-d '{"username":"testuser","password":"testpass"}'
+{"message":"Invalid credentials"}
