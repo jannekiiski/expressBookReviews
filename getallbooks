@@ -1,5 +1,4 @@
-theia@theia-jannekiiski9:/home/project$ c//localhost:5000/
-url http://localhost:5000/
+theia@theia-jannekiiski9:/home/project$ curl http://localhost:5000/
 {
     "1": {
         "author": "Chinua Achebe",
